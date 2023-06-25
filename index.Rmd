@@ -1,0 +1,49 @@
+---
+title: "Extensiones del Modelo de Koyck"
+runningheader: "Modelos de espectativas adaptativas y Ajuste parcial"
+subtitle: "Sector Minero" 
+author: "Ismael Giancarlo Aguedo Aguilar"
+date: "`r Sys.Date()`"
+output:
+  tufte::tufte_html: default
+  tufte::tufte_handout:
+    citation_package: natbib
+    latex_engine: xelatex
+  tufte::tufte_book:
+    citation_package: natbib
+    latex_engine: xelatex
+bibliography: skeleton.bib
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+library(tufte)
+# invalidate cache when the tufte versión changes
+knitr::opts_chunk$set(cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+```
+
+```{r, include=FALSE}
+# Paquetes usados
+library(tidyverse) # Para acomodar las tablas 
+library(dynlm) # Para los modelos Dinámicos Koyck, Expectativas y Ajuste
+library(readxl) # Para llamar mi base de datos
+```
+
+# Primeramente importamos los datos
+
+```{r, include=FALSE}
+# file.choose()  -> para averiguar ruta archivo
+ruta_datos <- "C:\\github\\finalKoyck\\base_datos\\PBIMINERO.xlsx"
+# excel_sheets(ruta_datos) -> para elegir la hoja a usar
+datos_mineria <- read_excel(ruta_datos)
+```
+
+```{r, comment=""}
+datos_mineria
+```
+Ocuparemos los datos del sector minero de una economía, en el cual el ***vcobre: Es el total de ventas de cobre del sector***, ***voro: Es el total de ventas de cobre del sector*** y ***pbiminero: PBI generado en este sector***^[hola].
+
+
+
+
