@@ -23,14 +23,25 @@ knitr::opts_chunk$set(cache.extra = packageVersion('tufte'))
 options(htmltools.dir.version = FALSE)
 ```
 
+# Introducción
+
+Un estudio de proyectos de inversión privada desea estimar la producción del sector minero de una economía, para ello evaluara un modelo econométrico para explicarlo a través del valor de venta de los minerales Cobre y Oro durante una serie mensual que va desde enero de 1992 hasta enero del 2000.
+
+
 ```{r, include=FALSE}
 # Paquetes usados
 library(tidyverse) # Para acomodar las tablas 
 library(dynlm) # Para los modelos Dinámicos Koyck, Expectativas y Ajuste
 library(readxl) # Para llamar mi base de datos
+library(gtsummary) # Para mostrar tabla de regresión estética
+library(sjPlot)
+library(broom)
 ```
 
-# Primeramente importamos los datos
+# 1. Primeramente importamos los datos
+
+Los datos estaran disponibles para EViews y Excel^[Tiene a su disposición la tabla [Tabla E-Views](https://drive.google.com/uc?export=download&id=1uAR7WNsQI_rk0MqQlIPkjY480Yte8SU3) también tiene la tabla para excel [Tabla Excel](https://docs.google.com/spreadsheets/d/1cP0xi9_IBRdKuM7HPV7BJY_WdteyyQCG/edit?usp=sharing&ouid=103350397932391216666&rtpof=true&sd=true), disponible para evaluar directamente en E-Views o usar los datos de Excel para STATA o R-Studio.
+]
 
 ```{r, include=FALSE}
 # file.choose()  -> para averiguar ruta archivo
@@ -42,8 +53,50 @@ datos_mineria <- read_excel(ruta_datos)
 ```{r, comment=""}
 datos_mineria
 ```
-Ocuparemos los datos del sector minero de una economía, en el cual el ***vcobre: Es el total de ventas de cobre del sector***, ***voro: Es el total de ventas de cobre del sector*** y ***pbiminero: PBI generado en este sector***^[hola].
+Ocuparemos los datos del sector minero de una economía, en el cual ***vcobre: Es el total de ventas de cobre del sector***, ***voro: Es el total de ventas de cobre del sector*** y ***pbiminero: PBI generado en este sector***^[Los datos observados están conformados por un total de 97 observaciones.].
 
+# Modelo de Koyck
 
+Primeramente evaluaremos modelo de Koyck con el cual hallaremos los betas para luego interpretarlos.
 
+```{r, include=FALSE}
+modelo_koyck <- dynlm(pbiminero ~ voro + vcobre + lag(pbiminero,1), data = datos_mineria)
+```
 
+```{r, include=FALSE}
+summary(modelo_koyck)
+```
+Residuos^[Los valores mínimo, máximo y el rango intercuartílico indican que los residuos presentan una dispersión considerable alrededor de cero. Esto sugiere que el modelo puede tener dificultades para ajustarse perfectamente a los datos y que existen ciertas variaciones que no pueden explicarse mediante las variables incluidas en el modelo.]
+
+```
+ 
+| Residuals: |         |        |        |        |
+|------------|---------|--------|--------|--------|
+| Min        | 1Q      | Median | 3Q     | Max    |
+| -2.9144    | -0.6417 | 0.0385 | 0.6341 | 4.0731 |
+ 
+```
+
+El modelo^[El criterio de decisión utilizado para determinar la significancia estadística es el valor p. Los coeficientes con valores p menores que un umbral predefinido (generalmente 0.05) se consideran significativos. En este caso, los coeficientes de "vcobre" y "lag(pbiminero, 1)" tienen valores p muy pequeños (< 0.001), indicando una alta significancia estadística.]
+
+```
+
+|   Coefficients:   |            |            |           |            |     |
+|:-----------------:|:----------:|:----------:|:---------:|:----------:|:---:|
+|                   |  Estimate  | Std. Error |  t value  |  Pr(>|t|)  |     |
+|-------------------|------------|------------|-----------|------------|-----|
+|    (Intercept)    | -1.140e-01 |  5.989e-01 |   -0.190  |    0.849   |     |
+|        voro       |  2.279e-05 |  3.631e-05 |   0.628   |    0.532   |     |
+|       vcobre      |  6.691e-05 |  6.089e-06 |   10.989  |  < 2e-16   | *** |
+| lag(pbiminero, 1) |  2.804e-01 |  5.091e-02 | 3.27e-07  |  3.27e-07  | *** |
+  
+```
+
+```
+
+| Residual standard error: 1.188 on 92 degrees of freedom |
+|        (1 observation deleted due to missingness)       |
+|  Multiple R-squared:0.9676, Adjusted R-squared: 0.9666  |
+|  F-statistic: 917.1 on 3 and 92 DF, p-value: < 2.2e-16  |
+
+```

@@ -96,8 +96,13 @@ if (window.hljs) {
 
 
 
+<div id="introducción" class="section level1">
+<h1>Introducción</h1>
+<p>Un estudio de proyectos de inversión privada desea estimar la producción del sector minero de una economía, para ello evaluara un modelo econométrico para explicarlo a través del valor de venta de los minerales Cobre y Oro durante una serie mensual que va desde enero de 1992 hasta enero del 2000.</p>
+</div>
 <div id="primeramente-importamos-los-datos" class="section level1">
-<h1>Primeramente importamos los datos</h1>
+<h1>1. Primeramente importamos los datos</h1>
+<p>Los datos estaran disponibles para EViews y Excel<label for="tufte-sn-1" class="margin-toggle sidenote-number">1</label><input type="checkbox" id="tufte-sn-1" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">1</span> Tiene a su disposición la tabla <a href="https://drive.google.com/uc?export=download&amp;id=1uAR7WNsQI_rk0MqQlIPkjY480Yte8SU3">Tabla E-Views</a> también tiene la tabla para excel <a href="https://docs.google.com/spreadsheets/d/1cP0xi9_IBRdKuM7HPV7BJY_WdteyyQCG/edit?usp=sharing&amp;ouid=103350397932391216666&amp;rtpof=true&amp;sd=true">Tabla Excel</a>, disponible para evaluar directamente en E-Views o usar los datos de Excel para STATA o R-Studio.</span></p>
 <pre class="r"><code>datos_mineria</code></pre>
 <pre><code># A tibble: 97 × 4
       mes  vcobre   voro pbiminero
@@ -113,7 +118,35 @@ if (window.hljs) {
  9 199209 196430. 11740.      17.8
 10 199210 200499. 12249.      18.1
 # ℹ 87 more rows</code></pre>
-<p>Ocuparemos los datos del sector minero de una economía, en el cual el <strong><em>vcobre: Es el total de ventas de cobre del sector</em></strong>, <strong><em>voro: Es el total de ventas de cobre del sector</em></strong> y <strong><em>pbiminero: PBI generado en este sector</em></strong><label for="tufte-sn-1" class="margin-toggle sidenote-number">1</label><input type="checkbox" id="tufte-sn-1" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">1</span> hola</span>.</p>
+<p>Ocuparemos los datos del sector minero de una economía, en el cual <strong><em>vcobre: Es el total de ventas de cobre del sector</em></strong>, <strong><em>voro: Es el total de ventas de cobre del sector</em></strong> y <strong><em>pbiminero: PBI generado en este sector</em></strong><label for="tufte-sn-2" class="margin-toggle sidenote-number">2</label><input type="checkbox" id="tufte-sn-2" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">2</span> Los datos observados están conformados por un total de 97 observaciones.</span>.</p>
+</div>
+<div id="modelo-de-koyck" class="section level1">
+<h1>Modelo de Koyck</h1>
+<p>Primeramente evaluaremos modelo de Koyck con el cual hallaremos los betas para luego interpretarlos.</p>
+<p>Residuos<label for="tufte-sn-3" class="margin-toggle sidenote-number">3</label><input type="checkbox" id="tufte-sn-3" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">3</span> Los valores mínimo, máximo y el rango intercuartílico indican que los residuos presentan una dispersión considerable alrededor de cero. Esto sugiere que el modelo puede tener dificultades para ajustarse perfectamente a los datos y que existen ciertas variaciones que no pueden explicarse mediante las variables incluidas en el modelo.</span></p>
+<pre><code> 
+| Residuals: |         |        |        |        |
+|------------|---------|--------|--------|--------|
+| Min        | 1Q      | Median | 3Q     | Max    |
+| -2.9144    | -0.6417 | 0.0385 | 0.6341 | 4.0731 |
+ </code></pre>
+<p>El modelo<label for="tufte-sn-4" class="margin-toggle sidenote-number">4</label><input type="checkbox" id="tufte-sn-4" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">4</span> El criterio de decisión utilizado para determinar la significancia estadística es el valor p. Los coeficientes con valores p menores que un umbral predefinido (generalmente 0.05) se consideran significativos. En este caso, los coeficientes de “vcobre” y “lag(pbiminero, 1)” tienen valores p muy pequeños (&lt; 0.001), indicando una alta significancia estadística.</span></p>
+<pre><code>
+|   Coefficients:   |            |            |           |            |     |
+|:-----------------:|:----------:|:----------:|:---------:|:----------:|:---:|
+|                   |  Estimate  | Std. Error |  t value  |  Pr(&gt;|t|)  |     |
+|-------------------|------------|------------|-----------|------------|-----|
+|    (Intercept)    | -1.140e-01 |  5.989e-01 |   -0.190  |    0.849   |     |
+|        voro       |  2.279e-05 |  3.631e-05 |   0.628   |    0.532   |     |
+|       vcobre      |  6.691e-05 |  6.089e-06 |   10.989  |  &lt; 2e-16   | *** |
+| lag(pbiminero, 1) |  2.804e-01 |  5.091e-02 | 3.27e-07  |  3.27e-07  | *** |
+  </code></pre>
+<pre><code>
+| Residual standard error: 1.188 on 92 degrees of freedom |
+|        (1 observation deleted due to missingness)       |
+|  Multiple R-squared:0.9676, Adjusted R-squared: 0.9666  |
+|  F-statistic: 917.1 on 3 and 92 DF, p-value: &lt; 2.2e-16  |
+</code></pre>
 </div>
 
 
