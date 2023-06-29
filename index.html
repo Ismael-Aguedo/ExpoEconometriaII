@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ismael Giancarlo Aguedo Aguilar" />
 
-<meta name="date" content="2023-06-25" />
+<meta name="date" content="2023-06-28" />
 
 <title>Extensiones del Modelo de Koyck</title>
 
@@ -92,7 +92,7 @@ if (window.hljs) {
 <h1 class="title toc-ignore">Extensiones del Modelo de Koyck</h1>
 <h3 class="subtitle">Sector Minero</h3>
 <h4 class="author">Ismael Giancarlo Aguedo Aguilar</h4>
-<h4 class="date">2023-06-25</h4>
+<h4 class="date">2023-06-28</h4>
 
 
 
@@ -123,14 +123,12 @@ if (window.hljs) {
 <div id="modelo-de-koyck" class="section level1">
 <h1>Modelo de Koyck</h1>
 <p>Primeramente evaluaremos modelo de Koyck con el cual hallaremos los betas para luego interpretarlos.</p>
-<p>Residuos<label for="tufte-sn-3" class="margin-toggle sidenote-number">3</label><input type="checkbox" id="tufte-sn-3" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">3</span> Los valores mínimo, máximo y el rango intercuartílico indican que los residuos presentan una dispersión considerable alrededor de cero. Esto sugiere que el modelo puede tener dificultades para ajustarse perfectamente a los datos y que existen ciertas variaciones que no pueden explicarse mediante las variables incluidas en el modelo.</span></p>
-<pre><code> 
-| Residuals: |         |        |        |        |
-|------------|---------|--------|--------|--------|
-| Min        | 1Q      | Median | 3Q     | Max    |
-| -2.9144    | -0.6417 | 0.0385 | 0.6341 | 4.0731 |
- </code></pre>
-<p>El modelo<label for="tufte-sn-4" class="margin-toggle sidenote-number">4</label><input type="checkbox" id="tufte-sn-4" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">4</span> El criterio de decisión utilizado para determinar la significancia estadística es el valor p. Los coeficientes con valores p menores que un umbral predefinido (generalmente 0.05) se consideran significativos. En este caso, los coeficientes de “vcobre” y “lag(pbiminero, 1)” tienen valores p muy pequeños (&lt; 0.001), indicando una alta significancia estadística.</span></p>
+<div id="koyck-a-corto-plazo" class="section level2">
+<h2>Koyck a Corto Plazo</h2>
+<p>Koyck se basa en el modelo de rezagos infinitos<label for="tufte-sn-3" class="margin-toggle sidenote-number">3</label><input type="checkbox" id="tufte-sn-3" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">3</span> Donde los betas son positivos, ademas <span class="math inline">\(V_{oro} \ y \ V_{cobre}\)</span> tienen rezagos infinitos.</span>. para el cual hace una transformación y logra obtener el siguiente modelo a Corto Plazo</p>
+<p><span class="math inline">\(\small PBI_{M,t} = \alpha(1 - \lambda) + \beta_{0} \cdot V_{oro,t} + \beta_{1} \cdot V_{cobre,t} + \lambda \cdot PBI_{M,t-1} + v_{t}\)</span></p>
+<p>Con este modelo resultado de la transformación evaluamos mediante software R:</p>
+<p><em>Estimaciones</em><label for="tufte-sn-4" class="margin-toggle sidenote-number">4</label><input type="checkbox" id="tufte-sn-4" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">4</span> El criterio de decisión utilizado para determinar la significancia estadística es el valor p. Los coeficientes con valores p menores que un umbral predefinido (generalmente 0.05) se consideran significativos. En este caso, los coeficientes de “vcobre” y “lag(pbiminero, 1)” tienen valores p muy pequeños (&lt; 0.001), indicando una alta significancia estadística.</span></p>
 <pre><code>
 |   Coefficients:   |            |            |           |            |     |
 |:-----------------:|:----------:|:----------:|:---------:|:----------:|:---:|
@@ -147,6 +145,7 @@ if (window.hljs) {
 |  Multiple R-squared:0.9676, Adjusted R-squared: 0.9666  |
 |  F-statistic: 917.1 on 3 and 92 DF, p-value: &lt; 2.2e-16  |
 </code></pre>
+</div>
 </div>
 
 
