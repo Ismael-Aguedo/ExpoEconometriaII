@@ -38,7 +38,7 @@ library(sjPlot)
 library(broom)
 ```
 
-# **1. Primeramente importamos los datos**
+# <span style="color:#B4045F">**1. Primeramente importamos los datos**</span>
 
 Los datos estaran disponibles para EViews y Excel^[Tiene a su disposición la tabla [Tabla E-Views](https://drive.google.com/uc?export=download&id=1uAR7WNsQI_rk0MqQlIPkjY480Yte8SU3) también tiene la tabla para excel [Tabla Excel](https://docs.google.com/spreadsheets/d/1cP0xi9_IBRdKuM7HPV7BJY_WdteyyQCG/edit?usp=sharing&ouid=103350397932391216666&rtpof=true&sd=true), disponible para evaluar directamente en E-Views o usar los datos de Excel para STATA o R-Studio.
 ]
@@ -55,11 +55,11 @@ datos_mineria
 ```
 Ocuparemos los datos del sector minero de una economía, en el cual ***vcobre: Es el total de ventas de cobre del sector***, ***voro: Es el total de ventas de cobre del sector*** y ***pbiminero: PBI generado en este sector***^[Los datos observados están conformados por un total de 97 observaciones.].
 
-# **2. Modelo de Koyck**
+# <span style="color:#B4045F">**2. Modelo de Koyck**</span>
 
 Primeramente evaluaremos modelo de Koyck con el cual hallaremos los betas para luego interpretarlos.
 
-## **Koyck a Corto Plazo** 
+## <span style="color:#610B38">**Koyck a Corto Plazo**</span> 
 
 Koyck se basa en el modelo de rezagos infinitos^[Donde los betas son positivos, ademas $V_{oro} \ y \ V_{cobre}$ tienen rezagos infinitos.]. para el cual hace una transformación y logra obtener el siguiente modelo a Corto Plazo
 
@@ -106,9 +106,15 @@ $$ PBI_{M,t} = -0.11400 + 0.000023 \cdot V_{oro,t} + $$
 
 $$+ 0.000067 \cdot V_{cobre,t} + 0.2804 \cdot PBI_{M,t-1} + v_{t}$$
 
-## **Koyck a Largo Plazo**
+## <span style="color:#610B38">**Koyck a Largo Plazo**</span>
 
 Se cumple entonces las siguientes igualdades:
 
 $$-0.114 = \alpha(1-\lambda) \rightarrow -0.114=\alpha(1-0.2804)$$
 $$\alpha=-0.158421$$
+Luego consideramos dividimos a todo por $0.7196$ y eliminamos $PBI_{M,t-1}$ ya que en el equilibrio de largo plazo implica que las variables alcanzan valores estables y que los efectos a corto plazo, como los cambios pasados, se vuelven menos significativos^[Nos explayaremos en los detalles de estas ideas en el siguiente APENDICE].
+
+Entonces el modelo de Koyck a Largo Plazo sera:
+
+$$PBI_{M}=-0.158421+0.0000319\cdot V_{oro,t} +$$
+$$+ 0.0000932 \cdot V_{cobre, t}$$

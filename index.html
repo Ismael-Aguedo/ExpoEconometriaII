@@ -101,7 +101,7 @@ if (window.hljs) {
 <p>Un estudio de proyectos de inversión privada desea estimar la producción del sector minero de una economía, para ello evaluara un modelo econométrico para explicarlo a través del valor de venta de los minerales Cobre y Oro durante una serie mensual que va desde enero de 1992 hasta enero del 2000.</p>
 </div>
 <div id="primeramente-importamos-los-datos" class="section level1">
-<h1><strong>1. Primeramente importamos los datos</strong></h1>
+<h1><span style="color:#B4045F"><strong>1. Primeramente importamos los datos</strong></span></h1>
 <p>Los datos estaran disponibles para EViews y Excel<label for="tufte-sn-1" class="margin-toggle sidenote-number">1</label><input type="checkbox" id="tufte-sn-1" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">1</span> Tiene a su disposición la tabla <a href="https://drive.google.com/uc?export=download&amp;id=1uAR7WNsQI_rk0MqQlIPkjY480Yte8SU3">Tabla E-Views</a> también tiene la tabla para excel <a href="https://docs.google.com/spreadsheets/d/1cP0xi9_IBRdKuM7HPV7BJY_WdteyyQCG/edit?usp=sharing&amp;ouid=103350397932391216666&amp;rtpof=true&amp;sd=true">Tabla Excel</a>, disponible para evaluar directamente en E-Views o usar los datos de Excel para STATA o R-Studio.</span></p>
 <pre class="r"><code>datos_mineria</code></pre>
 <pre><code># A tibble: 97 × 4
@@ -121,10 +121,10 @@ if (window.hljs) {
 <p>Ocuparemos los datos del sector minero de una economía, en el cual <strong><em>vcobre: Es el total de ventas de cobre del sector</em></strong>, <strong><em>voro: Es el total de ventas de cobre del sector</em></strong> y <strong><em>pbiminero: PBI generado en este sector</em></strong><label for="tufte-sn-2" class="margin-toggle sidenote-number">2</label><input type="checkbox" id="tufte-sn-2" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">2</span> Los datos observados están conformados por un total de 97 observaciones.</span>.</p>
 </div>
 <div id="modelo-de-koyck" class="section level1">
-<h1><strong>2. Modelo de Koyck</strong></h1>
+<h1><span style="color:#B4045F"><strong>2. Modelo de Koyck</strong></span></h1>
 <p>Primeramente evaluaremos modelo de Koyck con el cual hallaremos los betas para luego interpretarlos.</p>
 <div id="koyck-a-corto-plazo" class="section level2">
-<h2><strong>Koyck a Corto Plazo</strong></h2>
+<h2><span style="color:#610B38"><strong>Koyck a Corto Plazo</strong></span></h2>
 <p>Koyck se basa en el modelo de rezagos infinitos<label for="tufte-sn-3" class="margin-toggle sidenote-number">3</label><input type="checkbox" id="tufte-sn-3" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">3</span> Donde los betas son positivos, ademas <span class="math inline">\(V_{oro} \ y \ V_{cobre}\)</span> tienen rezagos infinitos.</span>. para el cual hace una transformación y logra obtener el siguiente modelo a Corto Plazo</p>
 <p><span class="math display">\[PBI_{M,t} = \alpha(1 - \lambda) + \beta_{0} \cdot V_{oro,t} + \]</span>
 <span class="math display">\[ + \beta_{1} \cdot V_{cobre,t} + \lambda \cdot PBI_{M,t-1} + v_{t}\]</span></p>
@@ -151,10 +151,14 @@ if (window.hljs) {
 <p><span class="math display">\[+ 0.000067 \cdot V_{cobre,t} + 0.2804 \cdot PBI_{M,t-1} + v_{t}\]</span></p>
 </div>
 <div id="koyck-a-largo-plazo" class="section level2">
-<h2><strong>Koyck a Largo Plazo</strong></h2>
+<h2><span style="color:#610B38"><strong>Koyck a Largo Plazo</strong></span></h2>
 <p>Se cumple entonces las siguientes igualdades:</p>
 <p><span class="math display">\[-0.114 = \alpha(1-\lambda) \rightarrow -0.114=\alpha(1-0.2804)\]</span>
-<span class="math display">\[\alpha=-0.158421\]</span></p>
+<span class="math display">\[\alpha=-0.158421\]</span>
+Luego consideramos dividimos a todo por <span class="math inline">\(0.7196\)</span> y eliminamos <span class="math inline">\(PBI_{M,t-1}\)</span> ya que en el equilibrio de largo plazo implica que las variables alcanzan valores estables y que los efectos a corto plazo, como los cambios pasados, se vuelven menos significativos<label for="tufte-sn-5" class="margin-toggle sidenote-number">5</label><input type="checkbox" id="tufte-sn-5" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">5</span> Nos explayaremos en los detalles de estas ideas en el siguiente APENDICE</span>.</p>
+<p>Entonces el modelo de Koyck a Largo Plazo sera:</p>
+<p><span class="math display">\[PBI_{M}=-0.158421+0.0000319\cdot V_{oro,t} +\]</span>
+<span class="math display">\[+ 0.0000932 \cdot V_{cobre, t}\]</span></p>
 </div>
 </div>
 
