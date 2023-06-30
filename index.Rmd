@@ -38,7 +38,7 @@ library(sjPlot)
 library(broom)
 ```
 
-# 1. Primeramente importamos los datos
+# **1. Primeramente importamos los datos**
 
 Los datos estaran disponibles para EViews y Excel^[Tiene a su disposición la tabla [Tabla E-Views](https://drive.google.com/uc?export=download&id=1uAR7WNsQI_rk0MqQlIPkjY480Yte8SU3) también tiene la tabla para excel [Tabla Excel](https://docs.google.com/spreadsheets/d/1cP0xi9_IBRdKuM7HPV7BJY_WdteyyQCG/edit?usp=sharing&ouid=103350397932391216666&rtpof=true&sd=true), disponible para evaluar directamente en E-Views o usar los datos de Excel para STATA o R-Studio.
 ]
@@ -55,15 +55,16 @@ datos_mineria
 ```
 Ocuparemos los datos del sector minero de una economía, en el cual ***vcobre: Es el total de ventas de cobre del sector***, ***voro: Es el total de ventas de cobre del sector*** y ***pbiminero: PBI generado en este sector***^[Los datos observados están conformados por un total de 97 observaciones.].
 
-# Modelo de Koyck
+# **2. Modelo de Koyck**
 
 Primeramente evaluaremos modelo de Koyck con el cual hallaremos los betas para luego interpretarlos.
 
-## Koyck a Corto Plazo 
+## **Koyck a Corto Plazo** 
 
 Koyck se basa en el modelo de rezagos infinitos^[Donde los betas son positivos, ademas $V_{oro} \ y \ V_{cobre}$ tienen rezagos infinitos.]. para el cual hace una transformación y logra obtener el siguiente modelo a Corto Plazo
 
-$\small PBI_{M,t} = \alpha(1 - \lambda) + \beta_{0} \cdot V_{oro,t} + \beta_{1} \cdot V_{cobre,t} + \lambda \cdot PBI_{M,t-1} + v_{t}$
+$$PBI_{M,t} = \alpha(1 - \lambda) + \beta_{0} \cdot V_{oro,t} + $$
+$$ + \beta_{1} \cdot V_{cobre,t} + \lambda \cdot PBI_{M,t-1} + v_{t}$$
 
 Con este modelo resultado de la transformación evaluamos mediante software R:
 
@@ -98,3 +99,16 @@ _Estimaciones_^[El criterio de decisión utilizado para determinar la significan
 |  F-statistic: 917.1 on 3 and 92 DF, p-value: < 2.2e-16  |
 
 ```
+
+Entonces el modelo de Koyck a Corto Plazo sera:
+
+$$ PBI_{M,t} = -0.11400 + 0.000023 \cdot V_{oro,t} + $$
+
+$$+ 0.000067 \cdot V_{cobre,t} + 0.2804 \cdot PBI_{M,t-1} + v_{t}$$
+
+## **Koyck a Largo Plazo**
+
+Se cumple entonces las siguientes igualdades:
+
+$$-0.114 = \alpha(1-\lambda) \rightarrow -0.114=\alpha(1-0.2804)$$
+$$\alpha=-0.158421$$

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ismael Giancarlo Aguedo Aguilar" />
 
-<meta name="date" content="2023-06-28" />
+<meta name="date" content="2023-06-30" />
 
 <title>Extensiones del Modelo de Koyck</title>
 
@@ -92,7 +92,7 @@ if (window.hljs) {
 <h1 class="title toc-ignore">Extensiones del Modelo de Koyck</h1>
 <h3 class="subtitle">Sector Minero</h3>
 <h4 class="author">Ismael Giancarlo Aguedo Aguilar</h4>
-<h4 class="date">2023-06-28</h4>
+<h4 class="date">2023-06-30</h4>
 
 
 
@@ -101,7 +101,7 @@ if (window.hljs) {
 <p>Un estudio de proyectos de inversión privada desea estimar la producción del sector minero de una economía, para ello evaluara un modelo econométrico para explicarlo a través del valor de venta de los minerales Cobre y Oro durante una serie mensual que va desde enero de 1992 hasta enero del 2000.</p>
 </div>
 <div id="primeramente-importamos-los-datos" class="section level1">
-<h1>1. Primeramente importamos los datos</h1>
+<h1><strong>1. Primeramente importamos los datos</strong></h1>
 <p>Los datos estaran disponibles para EViews y Excel<label for="tufte-sn-1" class="margin-toggle sidenote-number">1</label><input type="checkbox" id="tufte-sn-1" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">1</span> Tiene a su disposición la tabla <a href="https://drive.google.com/uc?export=download&amp;id=1uAR7WNsQI_rk0MqQlIPkjY480Yte8SU3">Tabla E-Views</a> también tiene la tabla para excel <a href="https://docs.google.com/spreadsheets/d/1cP0xi9_IBRdKuM7HPV7BJY_WdteyyQCG/edit?usp=sharing&amp;ouid=103350397932391216666&amp;rtpof=true&amp;sd=true">Tabla Excel</a>, disponible para evaluar directamente en E-Views o usar los datos de Excel para STATA o R-Studio.</span></p>
 <pre class="r"><code>datos_mineria</code></pre>
 <pre><code># A tibble: 97 × 4
@@ -121,12 +121,13 @@ if (window.hljs) {
 <p>Ocuparemos los datos del sector minero de una economía, en el cual <strong><em>vcobre: Es el total de ventas de cobre del sector</em></strong>, <strong><em>voro: Es el total de ventas de cobre del sector</em></strong> y <strong><em>pbiminero: PBI generado en este sector</em></strong><label for="tufte-sn-2" class="margin-toggle sidenote-number">2</label><input type="checkbox" id="tufte-sn-2" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">2</span> Los datos observados están conformados por un total de 97 observaciones.</span>.</p>
 </div>
 <div id="modelo-de-koyck" class="section level1">
-<h1>Modelo de Koyck</h1>
+<h1><strong>2. Modelo de Koyck</strong></h1>
 <p>Primeramente evaluaremos modelo de Koyck con el cual hallaremos los betas para luego interpretarlos.</p>
 <div id="koyck-a-corto-plazo" class="section level2">
-<h2>Koyck a Corto Plazo</h2>
+<h2><strong>Koyck a Corto Plazo</strong></h2>
 <p>Koyck se basa en el modelo de rezagos infinitos<label for="tufte-sn-3" class="margin-toggle sidenote-number">3</label><input type="checkbox" id="tufte-sn-3" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">3</span> Donde los betas son positivos, ademas <span class="math inline">\(V_{oro} \ y \ V_{cobre}\)</span> tienen rezagos infinitos.</span>. para el cual hace una transformación y logra obtener el siguiente modelo a Corto Plazo</p>
-<p><span class="math inline">\(\small PBI_{M,t} = \alpha(1 - \lambda) + \beta_{0} \cdot V_{oro,t} + \beta_{1} \cdot V_{cobre,t} + \lambda \cdot PBI_{M,t-1} + v_{t}\)</span></p>
+<p><span class="math display">\[PBI_{M,t} = \alpha(1 - \lambda) + \beta_{0} \cdot V_{oro,t} + \]</span>
+<span class="math display">\[ + \beta_{1} \cdot V_{cobre,t} + \lambda \cdot PBI_{M,t-1} + v_{t}\]</span></p>
 <p>Con este modelo resultado de la transformación evaluamos mediante software R:</p>
 <p><em>Estimaciones</em><label for="tufte-sn-4" class="margin-toggle sidenote-number">4</label><input type="checkbox" id="tufte-sn-4" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">4</span> El criterio de decisión utilizado para determinar la significancia estadística es el valor p. Los coeficientes con valores p menores que un umbral predefinido (generalmente 0.05) se consideran significativos. En este caso, los coeficientes de “vcobre” y “lag(pbiminero, 1)” tienen valores p muy pequeños (&lt; 0.001), indicando una alta significancia estadística.</span></p>
 <pre><code>
@@ -145,6 +146,15 @@ if (window.hljs) {
 |  Multiple R-squared:0.9676, Adjusted R-squared: 0.9666  |
 |  F-statistic: 917.1 on 3 and 92 DF, p-value: &lt; 2.2e-16  |
 </code></pre>
+<p>Entonces el modelo de Koyck a Corto Plazo sera:</p>
+<p><span class="math display">\[ PBI_{M,t} = -0.11400 + 0.000023 \cdot V_{oro,t} + \]</span></p>
+<p><span class="math display">\[+ 0.000067 \cdot V_{cobre,t} + 0.2804 \cdot PBI_{M,t-1} + v_{t}\]</span></p>
+</div>
+<div id="koyck-a-largo-plazo" class="section level2">
+<h2><strong>Koyck a Largo Plazo</strong></h2>
+<p>Se cumple entonces las siguientes igualdades:</p>
+<p><span class="math display">\[-0.114 = \alpha(1-\lambda) \rightarrow -0.114=\alpha(1-0.2804)\]</span>
+<span class="math display">\[\alpha=-0.158421\]</span></p>
 </div>
 </div>
 
