@@ -36,6 +36,7 @@ library(readxl) # Para llamar mi base de datos
 library(gtsummary) # Para mostrar tabla de regresión estética
 library(sjPlot)
 library(broom)
+library(lmtest)
 ```
 
 # <span style="color:#B4045F">**1. Primeramente importamos los datos**</span>
@@ -79,8 +80,11 @@ summary(modelo_koyck)
 _Estimaciones_^[El criterio de decisión utilizado para determinar la significancia estadística es el valor p. Los coeficientes con valores p menores que un umbral predefinido (generalmente 0.05) se consideran significativos. En este caso, los coeficientes de "vcobre" y "lag(pbiminero, 1)" tienen valores p muy pequeños (< 0.001), indicando una alta significancia estadística.]
 
 ```
-
-|   Coefficients:   |            |            |           |            |     |
+|   Dependent Variable: PBIminero                                            |
+|   Method: Least Squares                                                    |
+|   Included observations: 96 after adjustments                              |
+|                                                                            |
+|   Coefficients:   |                                     |            |     |
 |:-----------------:|:----------:|:----------:|:---------:|:----------:|:---:|
 |                   |  Estimate  | Std. Error |  t value  |  Pr(>|t|)  |     |
 |-------------------|------------|------------|-----------|------------|-----|
@@ -88,33 +92,76 @@ _Estimaciones_^[El criterio de decisión utilizado para determinar la significan
 |        voro       |  2.279e-05 |  3.631e-05 |   0.628   |    0.532   |     |
 |       vcobre      |  6.691e-05 |  6.089e-06 |   10.989  |  < 2e-16   | *** |
 | lag(pbiminero, 1) |  2.804e-01 |  5.091e-02 | 3.27e-07  |  3.27e-07  | *** |
-  
-```
 
 ```
 
+```
 | Residual standard error: 1.188 on 92 degrees of freedom |
 |        (1 observation deleted due to missingness)       |
 |  Multiple R-squared:0.9676, Adjusted R-squared: 0.9666  |
 |  F-statistic: 917.1 on 3 and 92 DF, p-value: < 2.2e-16  |
 
 ```
+Según el modelo de Koyck estimado, las ventas de cobre y el PBI rezagado del sector minero son variables estadísticamente significativas y tienen un impacto positivo en la producción del sector minero. Sin embargo, las ventas de oro no parecen ser estadísticamente significativas en la explicación de la producción del sector minero.
+
+## <span style="color:#610B38">**Koyck a Corto Plazo sin considerar $V_{oro}$**</span>
+
+```{r, include=FALSE}
+modelo_koyck_sin_voro <- dynlm(pbiminero ~ vcobre + lag(pbiminero,1), data = datos_mineria)
+```
+
+```{r, include=FALSE}
+summary(modelo_koyck_sin_voro)
+```
+
+```
+|   Dependent Variable: PBIminero                                            |
+|   Method: Least Squares                                                    |
+|   Included observations: 96 after adjustments                              |
+|                                                                            |
+|   Coefficients:   |                                     |            |     |
+|:-----------------:|:----------:|:----------:|:---------:|:----------:|:---:|
+|                   |  Estimate  | Std. Error |  t value  |  Pr(>|t|)  |     |
+|-------------------|------------|------------|-----------|------------|-----|
+|    (Intercept)    |  -0.273916 |   0.540203 | -0.507061 |   0.6133   |     |
+|       vcobre      |   6.91e-05 |   4.94e-06 |  13.98160 |   0.0000   | *** |
+| lag(pbiminero, 1) |   0.283092 |   0.050567 |  5.598304 |   0.0000   | *** |
+
+```
+```{r, include=FALSE}
+# Hallando el Durbin-Watson stat
+dw <- dwtest(modelo_koyck_sin_voro)
+dw
+```
+
+```
+| Residual standard error: 1.188 on 93 degrees of freedom |
+|        (1 observation deleted due to missingness)       |
+|  Multiple R-squared:0.9675, Adjusted R-squared: 0.9668  |
+|                Durbin Watson Stat = 1.5733              |
+```
+
+
+El output de la regresión nos muestra el estadístico Durbin Watson, el cual mide la autocorrelación de primer grado. Si, toma un valor cercano a 2, entonces no existe autocorrelación, si este es cercano a 4 entonces existe autocorrelación negativa y si es cercano a 0, entonces existe autocorrelación positiva. Para el caso se observa que toma el valor de 1.5733, el cual es cercano a 2 por lo que no existe autocorrelación.
+
+Calculo adicionales se desarrollan en el APENDICE^[Aqui encontraremos, calculo de $\beta_{1}$, $\beta_{2}$, $\beta_{3}$ ; betas estandarizados, rezago medio, mediana de los rezagos, etc]
 
 Entonces el modelo de Koyck a Corto Plazo sera:
 
-$$ PBI_{M,t} = -0.11400 + 0.000023 \cdot V_{oro,t} + $$
+$$ PBI_{M,t} = -0.273916 + 0.0000691  \cdot V_{cobre,t} + $$
 
-$$+ 0.000067 \cdot V_{cobre,t} + 0.2804 \cdot PBI_{M,t-1} + v_{t}$$
+$$ + 0.283092 \cdot PBI_{M,t-1} + v_{t}$$
 
 ## <span style="color:#610B38">**Koyck a Largo Plazo**</span>
 
 Se cumple entonces las siguientes igualdades:
 
-$$-0.114 = \alpha(1-\lambda) \rightarrow -0.114=\alpha(1-0.2804)$$
-$$\alpha=-0.158421$$
-Luego consideramos dividimos a todo por $0.7196$ y eliminamos $PBI_{M,t-1}$ ya que en el equilibrio de largo plazo implica que las variables alcanzan valores estables y que los efectos a corto plazo, como los cambios pasados, se vuelven menos significativos^[Nos explayaremos en los detalles de estas ideas en el siguiente APENDICE].
+$$-0.273916 = \alpha(1-\lambda) \rightarrow -0.273916=\alpha(1-0.283092)$$
+$$\alpha=-0.382$$
+Luego  dividimos a todo por $(1-\lambda)=0.716908$ y eliminamos $PBI_{M,t-1}$ ya que en el equilibrio de largo plazo implica que las variables alcanzan valores estables y que los efectos a corto plazo, como los cambios pasados, se vuelven menos significativos^[Nos explayaremos en los detalles de estas ideas en el siguiente APENDICE].
+
 
 Entonces el modelo de Koyck a Largo Plazo sera:
 
-$$PBI_{M}=-0.158421+0.0000319\cdot V_{oro,t} +$$
-$$+ 0.0000932 \cdot V_{cobre, t}$$
+$$PBI_{M}=-0.382+ 0.0000963 \cdot V_{cobre, t}$$
+El modelo de Koyck a largo plazo indica que el PBI del sector minero (PBIM) está influenciado por las ventas de cobre (Vcobre). Según el modelo, por cada unidad adicional de ventas de cobre, se espera un incremento de 0.0000963 unidades en el PBI del sector minero. El término constante (-0.382) representa el nivel base del PBI del sector minero cuando las ventas de cobre son nulas.
