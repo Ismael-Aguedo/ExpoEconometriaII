@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ismael Giancarlo Aguedo Aguilar" />
 
-<meta name="date" content="2023-07-01" />
+<meta name="date" content="2023-07-02" />
 
 <title>Extensiones del Modelo de Koyck</title>
 
@@ -92,40 +92,40 @@ if (window.hljs) {
 <h1 class="title toc-ignore">Extensiones del Modelo de Koyck</h1>
 <h3 class="subtitle">Sector Minero</h3>
 <h4 class="author">Ismael Giancarlo Aguedo Aguilar</h4>
-<h4 class="date">2023-07-01</h4>
+<h4 class="date">2023-07-02</h4>
 
 
 
 <div id="introducción" class="section level1">
 <h1>Introducción</h1>
-<p>Un estudio de proyectos de inversión privada desea estimar la producción del sector minero de una economía, para ello evaluara un modelo econométrico para explicarlo a través del valor de venta de los minerales Cobre y Oro durante una serie mensual que va desde enero de 1992 hasta enero del 2000.</p>
+<p>Un estudio de proyectos de inversión privada desea estimar el impacto de las ventas de los dos principales productos mineros en el PBI del sector minero de una economía, para ello evaluara un modelo econométrico para explicarlo a través del valor de venta de los minerales Cobre y Oro durante una serie mensual que va desde enero de 2002 hasta enero del 2010.</p>
 </div>
 <div id="primeramente-importamos-los-datos" class="section level1">
 <h1><span style="color:#B4045F"><strong>1. Primeramente importamos los datos</strong></span></h1>
-<p>Los datos estaran disponibles para EViews y Excel<label for="tufte-sn-1" class="margin-toggle sidenote-number">1</label><input type="checkbox" id="tufte-sn-1" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">1</span> Tiene a su disposición la tabla <a href="https://drive.google.com/uc?export=download&amp;id=1uAR7WNsQI_rk0MqQlIPkjY480Yte8SU3">Tabla E-Views</a> también tiene la tabla para excel <a href="https://docs.google.com/spreadsheets/d/1cP0xi9_IBRdKuM7HPV7BJY_WdteyyQCG/edit?usp=sharing&amp;ouid=103350397932391216666&amp;rtpof=true&amp;sd=true">Tabla Excel</a>, disponible para evaluar directamente en E-Views o usar los datos de Excel para STATA o R-Studio.</span></p>
+<p>Los datos estaran disponibles para EViews y Excel<label for="tufte-sn-1" class="margin-toggle sidenote-number">1</label><input type="checkbox" id="tufte-sn-1" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">1</span> Tiene a su disposición la tabla <a href="https://drive.google.com/uc?export=download&amp;id=1fUGrCXQ5LbHlWDqJXcIp7EUaJRSH8meG">Tabla E-Views</a> también tiene la tabla para Excel <a href="https://docs.google.com/spreadsheets/d/1htg3xiUUrs91UanwOd9trkfUU56EAgZs/edit?usp=sharing&amp;ouid=103350397932391216666&amp;rtpof=true&amp;sd=true">Tabla Excel</a>, disponible para evaluar directamente en E-Views o usar los datos de Excel para STATA o R-Studio.</span></p>
 <pre class="r"><code>datos_mineria</code></pre>
 <pre><code># A tibble: 97 × 4
-      mes  vcobre   voro pbiminero
-    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;
- 1 199201 182297. 16840.      18.2
- 2 199202 193512. 12864.      16.9
- 3 199203 175297. 12114.      17.2
- 4 199204 178023. 10068.      16.6
- 5 199205 157768. 10958.      15.3
- 6 199206 159827.  9968.      14.9
- 7 199207 171510. 10997.      16.0
- 8 199208 177860. 13112.      17.2
- 9 199209 196430. 11740.      17.8
-10 199210 200499. 12249.      18.1
+   mes      vcobre   voro pbiminero
+   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;
+ 1 2002M01 182297. 16840.    182085
+ 2 2002M02 193512. 12864.    169150
+ 3 2002M03 175297. 12114.    172135
+ 4 2002M04 178023. 10068.    166165
+ 5 2002M05 157768. 10958.    153230
+ 6 2002M06 159827.  9968.    149250
+ 7 2002M07 171510. 10997.    160195
+ 8 2002M08 177860. 13112.    172135
+ 9 2002M09 196430. 11740.    178105
+10 2002M10 200499. 12249.    181090
 # ℹ 87 more rows</code></pre>
-<p>Ocuparemos los datos del sector minero de una economía, en el cual <strong><em>vcobre: Es el total de ventas de cobre del sector</em></strong>, <strong><em>voro: Es el total de ventas de cobre del sector</em></strong> y <strong><em>pbiminero: PBI generado en este sector</em></strong><label for="tufte-sn-2" class="margin-toggle sidenote-number">2</label><input type="checkbox" id="tufte-sn-2" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">2</span> Los datos observados están conformados por un total de 97 observaciones.</span>.</p>
+<p>Ocuparemos los datos del sector minero de una economía, en el cual <strong><em>Vcobre: Es el total de ventas de cobre del sector</em></strong>, <strong><em>Voro: Es el total de ventas de cobre del sector</em></strong> y <strong><em>PBIminero: PBI generado en este sector</em></strong><label for="tufte-sn-2" class="margin-toggle sidenote-number">2</label><input type="checkbox" id="tufte-sn-2" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">2</span> Los datos observados están conformados por un total de 97 observaciones.</span>.</p>
 </div>
 <div id="modelo-de-koyck" class="section level1">
 <h1><span style="color:#B4045F"><strong>2. Modelo de Koyck</strong></span></h1>
 <p>Primeramente evaluaremos modelo de Koyck con el cual hallaremos los betas para luego interpretarlos.</p>
 <div id="koyck-a-corto-plazo" class="section level2">
 <h2><span style="color:#610B38"><strong>Koyck a Corto Plazo</strong></span></h2>
-<p>Koyck se basa en el modelo de rezagos infinitos<label for="tufte-sn-3" class="margin-toggle sidenote-number">3</label><input type="checkbox" id="tufte-sn-3" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">3</span> Donde los betas son positivos, ademas <span class="math inline">\(V_{oro} \ y \ V_{cobre}\)</span> tienen rezagos infinitos.</span>. para el cual hace una transformación y logra obtener el siguiente modelo a Corto Plazo</p>
+<p>Koyck se basa en el modelo de rezagos infinitos<label for="tufte-sn-3" class="margin-toggle sidenote-number">3</label><input type="checkbox" id="tufte-sn-3" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">3</span> Donde los betas son positivos, ademas <span class="math inline">\(V_{oro} \ y \ V_{cobre}\)</span> tienen rezagos infinitos. La deducción del modelo de Koyck se encuentra en este <a href="https://ismael-aguedo.github.io/ApendiceMatematico-ExpoEconometriaII/">APENDICE</a></span>. para el cual hace una transformación y logra obtener el siguiente modelo a Corto Plazo</p>
 <p><span class="math display">\[PBI_{M,t} = \alpha(1 - \lambda) + \beta_{0} \cdot V_{oro,t} + \]</span>
 <span class="math display">\[ + \beta_{1} \cdot V_{cobre,t} + \lambda \cdot PBI_{M,t-1} + v_{t}\]</span></p>
 <p>Con este modelo resultado de la transformación evaluamos mediante software R:</p>
@@ -138,16 +138,16 @@ if (window.hljs) {
 |:-----------------:|:----------:|:----------:|:---------:|:----------:|:---:|
 |                   |  Estimate  | Std. Error |  t value  |  Pr(&gt;|t|)  |     |
 |-------------------|------------|------------|-----------|------------|-----|
-|    (Intercept)    | -1.140e-01 |  5.989e-01 |   -0.190  |    0.849   |     |
-|        voro       |  2.279e-05 |  3.631e-05 |   0.628   |    0.532   |     |
-|       vcobre      |  6.691e-05 |  6.089e-06 |   10.989  |  &lt; 2e-16   | *** |
-| lag(pbiminero, 1) |  2.804e-01 |  5.091e-02 | 3.27e-07  |  3.27e-07  | *** |
+|    (Intercept)    |  -1140.401 |   5988.554 | -0.19043  |   0.8494   |     |
+|        voro       |   0.227894 |   0.363120 | 0.627599  |   0.5318   |     |
+|       vcobre      |   0.669113 |   0.060891 | 10.98875  |   0.0000   | *** |
+| lag(pbiminero, 1) |   0.280428 |   0.050910 | 5.508265  |   0.0000   | *** |
 </code></pre>
-<pre><code>| Residual standard error: 1.188 on 92 degrees of freedom |
+<pre><code>| Residual standard error: 11880 on 92 degrees of freedom |
 |        (1 observation deleted due to missingness)       |
 |  Multiple R-squared:0.9676, Adjusted R-squared: 0.9666  |
 |  F-statistic: 917.1 on 3 and 92 DF, p-value: &lt; 2.2e-16  |
-</code></pre>
+|                Durbin Watson Stat = 1.5539              |</code></pre>
 <p>Según el modelo de Koyck estimado, las ventas de cobre y el PBI rezagado del sector minero son variables estadísticamente significativas y tienen un impacto positivo en la producción del sector minero. Sin embargo, las ventas de oro no parecen ser estadísticamente significativas en la explicación de la producción del sector minero.</p>
 </div>
 <div id="koyck-a-corto-plazo-sin-considerar-v_oro" class="section level2">
@@ -160,8 +160,8 @@ if (window.hljs) {
 |:-----------------:|:----------:|:----------:|:---------:|:----------:|:---:|
 |                   |  Estimate  | Std. Error |  t value  |  Pr(&gt;|t|)  |     |
 |-------------------|------------|------------|-----------|------------|-----|
-|    (Intercept)    |  -0.273916 |   0.540203 | -0.507061 |   0.6133   |     |
-|       vcobre      |   6.91e-05 |   4.94e-06 |  13.98160 |   0.0000   | *** |
+|    (Intercept)    |  -2739.161 |   5402.034 | -0.507061 |   0.6133   |     |
+|       vcobre      |   0.691277 |   0.049442 |  13.98160 |   0.0000   | *** |
 | lag(pbiminero, 1) |   0.283092 |   0.050567 |  5.598304 |   0.0000   | *** |
 </code></pre>
 <pre><code>| Residual standard error: 1.188 on 93 degrees of freedom |
@@ -169,21 +169,22 @@ if (window.hljs) {
 |  Multiple R-squared:0.9675, Adjusted R-squared: 0.9668  |
 |                Durbin Watson Stat = 1.5733              |</code></pre>
 <p>El output de la regresión nos muestra el estadístico Durbin Watson, el cual mide la autocorrelación de primer grado. Si, toma un valor cercano a 2, entonces no existe autocorrelación, si este es cercano a 4 entonces existe autocorrelación negativa y si es cercano a 0, entonces existe autocorrelación positiva. Para el caso se observa que toma el valor de 1.5733, el cual es cercano a 2 por lo que no existe autocorrelación.</p>
-<p>Calculo adicionales se desarrollan en el APENDICE<label for="tufte-sn-5" class="margin-toggle sidenote-number">5</label><input type="checkbox" id="tufte-sn-5" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">5</span> Aqui encontraremos, calculo de <span class="math inline">\(\beta_{1}\)</span>, <span class="math inline">\(\beta_{2}\)</span>, <span class="math inline">\(\beta_{3}\)</span> ; betas estandarizados, rezago medio, mediana de los rezagos, etc</span></p>
+<p>Calculo adicionales se desarrollan en el APENDICE<label for="tufte-sn-5" class="margin-toggle sidenote-number">5</label><input type="checkbox" id="tufte-sn-5" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">5</span> <a href="https://ismael-aguedo.github.io/ApendiceMatematico-ExpoEconometriaII/">Aqui</a> encontraremos, calculo de <span class="math inline">\(\beta_{1}\)</span>, <span class="math inline">\(\beta_{2}\)</span>, <span class="math inline">\(\beta_{3}\)</span> ; betas estandarizados, rezago medio, mediana de los rezagos, etc</span></p>
 <p>Entonces el modelo de Koyck a Corto Plazo sera:</p>
-<p><span class="math display">\[ PBI_{M,t} = -0.273916 + 0.0000691  \cdot V_{cobre,t} + \]</span></p>
+<p><span class="math display">\[ PBI_{M,t} = -2739.16 + 0.691277  \cdot V_{cobre,t} + \]</span></p>
 <p><span class="math display">\[ + 0.283092 \cdot PBI_{M,t-1} + v_{t}\]</span></p>
 </div>
-<div id="koyck-a-largo-plazo" class="section level2">
-<h2><span style="color:#610B38"><strong>Koyck a Largo Plazo</strong></span></h2>
-<p>Se cumple entonces las siguientes igualdades:</p>
-<p><span class="math display">\[-0.273916 = \alpha(1-\lambda) \rightarrow -0.273916=\alpha(1-0.283092)\]</span>
-<span class="math display">\[\alpha=-0.382\]</span>
-Luego dividimos a todo por <span class="math inline">\((1-\lambda)=0.716908\)</span> y eliminamos <span class="math inline">\(PBI_{M,t-1}\)</span> ya que en el equilibrio de largo plazo implica que las variables alcanzan valores estables y que los efectos a corto plazo, como los cambios pasados, se vuelven menos significativos<label for="tufte-sn-6" class="margin-toggle sidenote-number">6</label><input type="checkbox" id="tufte-sn-6" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">6</span> Nos explayaremos en los detalles de estas ideas en el siguiente APENDICE</span>.</p>
-<p>Entonces el modelo de Koyck a Largo Plazo sera:</p>
-<p><span class="math display">\[PBI_{M}=-0.382+ 0.0000963 \cdot V_{cobre, t}\]</span>
-El modelo de Koyck a largo plazo indica que el PBI del sector minero (PBIM) está influenciado por las ventas de cobre (Vcobre). Según el modelo, por cada unidad adicional de ventas de cobre, se espera un incremento de 0.0000963 unidades en el PBI del sector minero. El término constante (-0.382) representa el nivel base del PBI del sector minero cuando las ventas de cobre son nulas.</p>
 </div>
+<div id="koyck-a-largo-plazo" class="section level1">
+<h1><span style="color:#B4045F"><strong>3. Koyck a Largo Plazo</strong></span></h1>
+<p>Se cumple entonces las siguientes igualdades:</p>
+<p><span class="math display">\[-2739.16 = \alpha(1-\lambda) \rightarrow -2739.16=\alpha(1-0.283092)\]</span>
+<span class="math display">\[\alpha=-3820.797\]</span>
+Luego dividimos a todo por <span class="math inline">\((1-\lambda)=0.716908\)</span> y eliminamos <span class="math inline">\(PBI_{M,t-1}\)</span> ya que en el equilibrio de largo plazo implica que las variables alcanzan valores estables y que los efectos a corto plazo, como los cambios pasados, se vuelven menos significativos<label for="tufte-sn-6" class="margin-toggle sidenote-number">6</label><input type="checkbox" id="tufte-sn-6" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">6</span> Nos explayaremos en los detalles de estas ideas en el siguiente <a href="https://ismael-aguedo.github.io/ApendiceMatematico-ExpoEconometriaII/">APENDICE</a></span>.</p>
+<p>Entonces el modelo de Koyck a Largo Plazo sera:</p>
+<p><span class="math display">\[PBI_{M}=-3820.797+ 0.96424 \cdot V_{cobre, t}\]</span>
+El modelo de Koyck a largo plazo indica que el PBI del sector minero (PBIM) está influenciado por las ventas de cobre (Vcobre). Según el modelo, por cada unidad adicional de ventas de cobre, se espera un incremento de 0.96424 unidades en el PBI del sector minero.</p>
+<p>Si las Ventas de los minerales y el PBI del sector estan expresadas en millones de soles, podríamos decir que las ventas de cobre (Vcobre) aumentan en 1 millón de soles, entonces se espera un aumento en el PBI del sector (PBIminero) de aproximadamente 0.96424 millones de soles.</p>
 </div>
 
 
