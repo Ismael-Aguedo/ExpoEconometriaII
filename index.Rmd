@@ -1,9 +1,14 @@
 ---
-title: "El Modelo de Koyck"
+title: "El Modelo de Koyck - Econometria II"
 runningheader: "Modelos de espectativas adaptativas y Ajuste parcial"
-subtitle: "Sector Minero" 
-author: "<span style='color:blue'>**Ismael Giancarlo Aguedo Aguilar,otro integrante, otro integrante**</span>"
-date: "`r Sys.Date()`"
+subtitle: "Sector Minero - Econometria II - FCE/UNAC" 
+author: 
+  - "<span style='color:#491827'>**_Integrantes_**</span>"
+  - "<span style='color:#D02357'>_Ismael Giancarlo Aguedo Aguilar_</span>"
+  - "<span style='color:#D02357'>_Emely Elizabeth Mamani Baca_</span>"
+  - "<span style='color:#D02357'>_Gonzalo Mauricio Zamalloa Quispe_</span>"
+  - "<span style='color:#491827'>**_Profesor_**</span>"
+  - "<span style='color:#D02357'>_David Davila Cajahuanca_</span>"
 output:
   tufte::tufte_html: default
   tufte::tufte_handout:
