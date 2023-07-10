@@ -10,11 +10,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Ismael Giancarlo Aguedo Aguilar" />
+<meta name="author" content="Ismael Giancarlo Aguedo Aguilar,otro integrante, otro integrante" />
 
-<meta name="date" content="2023-07-02" />
+<meta name="date" content="2023-07-09" />
 
-<title>Extensiones del Modelo de Koyck</title>
+<title>El Modelo de Koyck</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -89,10 +89,10 @@ if (window.hljs) {
 
 
 
-<h1 class="title toc-ignore">Extensiones del Modelo de Koyck</h1>
+<h1 class="title toc-ignore">El Modelo de Koyck</h1>
 <h3 class="subtitle">Sector Minero</h3>
-<h4 class="author">Ismael Giancarlo Aguedo Aguilar</h4>
-<h4 class="date">2023-07-02</h4>
+<h4 class="author"><span style="color:blue"><strong>Ismael Giancarlo Aguedo Aguilar,otro integrante, otro integrante</strong></span></h4>
+<h4 class="date">2023-07-09</h4>
 
 
 
@@ -167,12 +167,30 @@ if (window.hljs) {
 <pre><code>| Residual standard error: 1.188 on 93 degrees of freedom |
 |        (1 observation deleted due to missingness)       |
 |  Multiple R-squared:0.9675, Adjusted R-squared: 0.9668  |
-|                Durbin Watson Stat = 1.5733              |</code></pre>
-<p>El output de la regresión nos muestra el estadístico Durbin Watson, el cual mide la autocorrelación de primer grado. Si, toma un valor cercano a 2, entonces no existe autocorrelación, si este es cercano a 4 entonces existe autocorrelación negativa y si es cercano a 0, entonces existe autocorrelación positiva. Para el caso se observa que toma el valor de 1.5733, el cual es cercano a 2 por lo que no existe autocorrelación.</p>
-<p>Calculo adicionales se desarrollan en el APENDICE<label for="tufte-sn-5" class="margin-toggle sidenote-number">5</label><input type="checkbox" id="tufte-sn-5" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">5</span> <a href="https://ismael-aguedo.github.io/ApendiceMatematico-ExpoEconometriaII/">Aqui</a> encontraremos, calculo de <span class="math inline">\(\beta_{1}\)</span>, <span class="math inline">\(\beta_{2}\)</span>, <span class="math inline">\(\beta_{3}\)</span> ; betas estandarizados, rezago medio, mediana de los rezagos, etc</span></p>
+|                Durbin Watson Stat = 1.573257            |</code></pre>
 <p>Entonces el modelo de Koyck a Corto Plazo sera:</p>
 <p><span class="math display">\[ PBI_{M,t} = -2739.16 + 0.691277  \cdot V_{cobre,t} + \]</span></p>
 <p><span class="math display">\[ + 0.283092 \cdot PBI_{M,t-1} + v_{t}\]</span></p>
+<div id="hallando-la-h-de-durbin" class="section level3">
+<h3><span style="color:#610B38"><strong>Hallando la <span class="math inline">\(h \ de \ Durbin\)</span></strong></span></h3>
+<p>Con el estadístico de Durbin y el siguiente siguiente error estandar de la variable rezagada, que se muestra a continuación:</p>
+<pre class="r"><code>std_error</code></pre>
+<pre><code>      (Intercept)            vcobre lag(pbiminero, 1) 
+     5.402034e+03      4.944188e-02      5.056743e-02 </code></pre>
+<p>Podemos usar la siguiente formula:</p>
+<p><span class="math display">\[h=\hat{\rho}\sqrt{\frac{n}{1-n\left[\hat{\alpha_{2}}\right]}}\]</span></p>
+<p>Donde <span class="math inline">\(\rightarrow \ \hat{\rho}=1-\frac{1}{d}\)</span>, con los siguientes datos:</p>
+<ul>
+<li><span class="math inline">\(\hat{\rho}=1-\frac{1}{1.573257}=0.3643759\)</span></li>
+<li><span class="math inline">\(\hat{\alpha_{2}}=(0.05056743)^{2}=0.002557065\)</span></li>
+<li><span class="math inline">\(n=96\)</span></li>
+</ul>
+<p>Por lo que el <span class="math inline">\(h \ de \ Durbin\)</span> sera:</p>
+<p><span class="math display">\[h=4.110071\]</span></p>
+<p>Por lo tanto, para una prueba del valor nulo Hipótesis de no autocorrelación contra la alternativa de 2 lados de Errores autocorrelacionados, a un nivel del 5%, la regla de decisión es, si -1,96 &lt; h &lt; 1,96 no rechace el
+Hipótesis nula. Es decir el modelo presenta autocorrelación positiva, lo cual demuestra una dependencia que sistemática entre los rezagos de la serie y el residuo del modelo, lo que implica que existe información de la serie rezagada que no ha sido completamente capturada en el modelo.</p>
+<p>Calculo adicionales se desarrollan en el APENDICE<label for="tufte-sn-5" class="margin-toggle sidenote-number">5</label><input type="checkbox" id="tufte-sn-5" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">5</span> <a href="https://ismael-aguedo.github.io/ApendiceMatematico-ExpoEconometriaII/">Aqui</a> encontraremos, calculo de <span class="math inline">\(\beta_{1}\)</span>, <span class="math inline">\(\beta_{2}\)</span>, <span class="math inline">\(\beta_{3}\)</span> ; betas estandarizados, rezago medio, mediana de los rezagos, etc</span></p>
+</div>
 </div>
 </div>
 <div id="koyck-a-largo-plazo" class="section level1">

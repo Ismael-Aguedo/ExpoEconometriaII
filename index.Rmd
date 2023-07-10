@@ -1,8 +1,8 @@
 ---
-title: "Extensiones del Modelo de Koyck"
+title: "El Modelo de Koyck"
 runningheader: "Modelos de espectativas adaptativas y Ajuste parcial"
 subtitle: "Sector Minero" 
-author: "Ismael Giancarlo Aguedo Aguilar"
+author: "<span style='color:blue'>**Ismael Giancarlo Aguedo Aguilar,otro integrante, otro integrante**</span>"
 date: "`r Sys.Date()`"
 output:
   tufte::tufte_html: default
@@ -113,6 +113,7 @@ Según el modelo de Koyck estimado, las ventas de cobre y el PBI rezagado del se
 
 ```{r, include=FALSE}
 modelo_koyck_sin_voro <- dynlm(pbiminero ~ vcobre + lag(pbiminero,1), data = datos_mineria)
+summary_modelo <- summary(modelo_koyck_sin_voro)
 ```
 
 ```{r, include=FALSE}
@@ -143,19 +144,47 @@ dw
 | Residual standard error: 1.188 on 93 degrees of freedom |
 |        (1 observation deleted due to missingness)       |
 |  Multiple R-squared:0.9675, Adjusted R-squared: 0.9668  |
-|                Durbin Watson Stat = 1.5733              |
+|                Durbin Watson Stat = 1.573257            |
 ```
-
-
-El output de la regresión nos muestra el estadístico Durbin Watson, el cual mide la autocorrelación de primer grado. Si, toma un valor cercano a 2, entonces no existe autocorrelación, si este es cercano a 4 entonces existe autocorrelación negativa y si es cercano a 0, entonces existe autocorrelación positiva. Para el caso se observa que toma el valor de 1.5733, el cual es cercano a 2 por lo que no existe autocorrelación.
-
-Calculo adicionales se desarrollan en el APENDICE^[[Aqui](https://ismael-aguedo.github.io/ApendiceMatematico-ExpoEconometriaII/) encontraremos, calculo de $\beta_{1}$, $\beta_{2}$, $\beta_{3}$ ; betas estandarizados, rezago medio, mediana de los rezagos, etc]
 
 Entonces el modelo de Koyck a Corto Plazo sera:
 
 $$ PBI_{M,t} = -2739.16 + 0.691277  \cdot V_{cobre,t} + $$
 
 $$ + 0.283092 \cdot PBI_{M,t-1} + v_{t}$$
+
+###  <span style="color:#610B38">**Hallando la $h \ de \ Durbin$**</span>
+
+Con el estadístico de Durbin y el siguiente siguiente error estandar de la variable rezagada, que se muestra a continuación:
+
+```{r, include=FALSE}
+# Extraer los errores estándar del resumen del modelo
+std_error <- summary_modelo$coefficients[, "Std. Error"]
+```
+```{r, comment=""}
+std_error
+```
+
+Podemos usar la siguiente formula:
+
+\[h=\hat{\rho}\sqrt{\frac{n}{1-n\left[\hat{\alpha_{2}}\right]}}\]
+
+Donde $\rightarrow \ \hat{\rho}=1-\frac{1}{d}$, con los siguientes datos:
+
+- $\hat{\rho}=1-\frac{1}{1.573257}=0.3643759$
+- $\hat{\alpha_{2}}=(0.05056743)^{2}=0.002557065$
+- $n=96$
+
+Por lo que el $h \ de \ Durbin$ sera:
+
+\[h=4.110071\]
+
+Por lo tanto, para una prueba del valor nulo Hipótesis de no autocorrelación contra la alternativa de 2 lados de Errores autocorrelacionados, a un nivel del 5%, la regla de decisión es, si -1,96 < h < 1,96 no rechace el
+Hipótesis nula. Es decir el modelo presenta autocorrelación positiva, lo cual demuestra una dependencia que sistemática entre los rezagos de la serie y el residuo del modelo, lo que implica que existe información de la serie rezagada que no ha sido completamente capturada en el modelo.
+
+Calculo adicionales se desarrollan en el APENDICE^[[Aqui](https://ismael-aguedo.github.io/ApendiceMatematico-ExpoEconometriaII/) encontraremos, calculo de $\beta_{1}$, $\beta_{2}$, $\beta_{3}$ ; betas estandarizados, rezago medio, mediana de los rezagos, etc]
+
+
 
 
 
